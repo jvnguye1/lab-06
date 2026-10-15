@@ -1,0 +1,56 @@
+package com.example.lab_06
+
+import junit.framework.TestCase.assertEquals
+import org.junit.Before
+import org.junit.Test
+
+class WizardTest {
+    private lateinit var evilWizard: Wizard
+
+    // Set up a new wizard before every single test
+    @Before
+    fun setUp() {
+        evilWizard = Wizard("Evil Wizard", 30, 10)
+    }
+
+    @Test
+    fun castSpell_explosion_successful() {
+        val damageDealt = evilWizard.castSpell("Explosion")
+
+        assertEquals(30, damageDealt) // spellPower of 10 * 3 = 30
+
+        assertEquals(20, evilWizard.mana) // mana of 30 - 10 = 20
+    }
+
+    @Test
+    fun castSpell_explosion_unsuccessful() {
+        evilWizard.mana = 5 // Evil Wizard does not have enough mana to cast "Explosion"
+        val damageDealt = evilWizard.castSpell("Explosion")
+
+        assertEquals(0, damageDealt)
+
+        assertEquals(5, evilWizard.mana) // mana still is 5
+    }
+
+    @Test
+    fun castSpell_frostbite_successful(){
+        evilWizard.mana = 100 //Evil Wizard has enough mana to cast "Frostbite"
+
+        val damageDealt = evilWizard.castSpell("Frostbite")
+
+        assertEquals(20, damageDealt) //should deal spellpower*2 damage, 20 for evil wizard
+
+        assertEquals(95, evilWizard.mana) //should have 95 mana left
+    }
+
+    @Test
+    fun castSpell_frostbite_unsuccessful(){
+        evilWizard.mana = 4 //Evil Wizard has enough mana to cast "Frostbite"
+
+        val damageDealt = evilWizard.castSpell("Frostbite")
+
+        assertEquals(0, damageDealt) //should deal spellpower*2 damage, 20 for evil wizard
+
+        assertEquals(4, evilWizard.mana) //should have 95 mana left
+    }
+}
